@@ -36,6 +36,10 @@ class App extends Component {
         let newName = window.prompt("What's the new name?")
         this.setState({ listName: newName })
     }
+    deleteFirst = () => {
+        console.log("Deleting the first element")
+        this.setState({ allTodos: this.state.allTodos.slice(1) })
+    }
     render() {
         console.log("Rendering with state", this.state)
         if (!this.state.listName) {
@@ -54,6 +58,7 @@ class App extends Component {
             </form>
             <button onClick={this.deleteEverything}>Delete all</button>
             <button onClick={this.rename}>Rename list</button>
+            <button onClick={this.deleteFirst}>Delete first element</button>
         </div>)
     }
 }
