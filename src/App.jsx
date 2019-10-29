@@ -53,7 +53,21 @@ class App extends Component {
         let newTodos = this.state.allTodos.slice()
         // Then modify the copy (reverse modifies the array)
         newTodos.reverse()
-        // Then set the todos propety of the state to the copy
+        // Then set the todos property of the state to the copy
+        this.setState({ allTodos: newTodos })
+    }
+    deleteSpecific = () => {
+        console.log("Deleting specific")
+        let indexToDelete = window.prompt("Which index do you want to delete?")
+        // The user sees index + 1, so we need to decrease the index by 1
+        indexToDelete = indexToDelete - 1
+        // Copy the current list
+        let todosCopy = this.state.allTodos.slice()
+        // Create a new array that doesn't include the element to delete
+        let newTodos = todosCopy.filter((x, index) => {
+            return index !== indexToDelete
+        })
+        // Then set the todos property of the state to the copy
         this.setState({ allTodos: newTodos })
     }
     render() {
@@ -85,6 +99,8 @@ class App extends Component {
             <button onClick={this.rename}>Rename list</button>
             <button onClick={this.deleteFirst}>Delete first element</button>
             <button onClick={this.reverseItems}>Reverse the list</button>
+            <button onClick={this.deleteSpecific}>Delete specific element</button>
+
         </div>)
     }
 }
