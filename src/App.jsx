@@ -27,6 +27,10 @@ class App extends Component {
             allTodos: this.state.allTodos.concat(this.state.userInput)
         })
     }
+    deleteEverything = () => {
+        console.log("deleting everything")
+        this.setState({ allTodos: [] })
+    }
     render() {
         console.log("Rendering with state", this.state)
         if (!this.state.listName) {
@@ -43,6 +47,7 @@ class App extends Component {
                     value={this.state.userInput} />
                 <input type="submit"></input>
             </form>
+            <button onClick={this.deleteEverything}>Delete all</button>
         </div>)
     }
 }
