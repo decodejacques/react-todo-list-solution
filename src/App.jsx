@@ -61,8 +61,8 @@ class App extends Component {
         if (!this.state.listName) {
             return (<div> loading ... </div>)
         }
-        let displayTodo = todo => {
-            return (<li>{todo.dueDate}: {todo.description}</li>)
+        let displayTodo = (todo, index) => {
+            return (<li>{index + 1}. {todo.dueDate}: {todo.description}</li>)
         }
         return (<div>
             <h1>{this.state.listName}</h1>
