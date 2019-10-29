@@ -31,6 +31,11 @@ class App extends Component {
         console.log("deleting everything")
         this.setState({ allTodos: [] })
     }
+    rename = () => {
+        console.log("Renaming the list")
+        let newName = window.prompt("What's the new name?")
+        this.setState({ listName: newName })
+    }
     render() {
         console.log("Rendering with state", this.state)
         if (!this.state.listName) {
@@ -48,6 +53,7 @@ class App extends Component {
                 <input type="submit"></input>
             </form>
             <button onClick={this.deleteEverything}>Delete all</button>
+            <button onClick={this.rename}>Rename list</button>
         </div>)
     }
 }
