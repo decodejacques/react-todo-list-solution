@@ -7,7 +7,8 @@ class App extends Component {
             listName: undefined,
             allTodos: [],
             userInput: "",
-            dueDateInput: ""
+            dueDateInput: "",
+            filterInput: ""
         }
     }
     componentDidMount() {
@@ -70,38 +71,66 @@ class App extends Component {
         // Then set the todos property of the state to the copy
         this.setState({ allTodos: newTodos })
     }
+    filterChangeHandler = evt => {
+        console.log("updating search filter")
+        this.setState({ filterInput: evt.target.value })
+    }
     render() {
         console.log("Rendering with state", this.state)
         if (!this.state.listName) {
             return (<div> loading ... </div>)
         }
-        let displayTodo = (todo, index) => {
-            return (<li>{index + 1}. {todo.dueDate}: {todo.description}</li>)
+        let numberTodo = (todo, ind) => {
+            return {
+                description: todo.description,
+                dueDate: todo.dueDate,
+                index: ind + 1
+            }
         }
+        let filterTodo = indexedTodo => {
+            return indexedTodo.description.includes(this.state.filterInput)
+        }
+        let displayTodo = indexedTodo => {
+            return (<li>{indexedTodo.index}.
+                {indexedTodo.dueDate}:
+                {indexedTodo.description}</li>)
+        }
+
+        let numberedTodos = this.state.allTodos.map(numberTodo)
+        let filteredTodos = numberedTodos.filter(filterTodo)
+        let displayedTodos = filteredTodos.map(displayTodo)
+
         return (<div>
             <h1>{this.state.listName}</h1>
             <ul>
-                {this.state.allTodos.map(displayTodo)}
+                {displayedTodos}
             </ul>
             <form onSubmit={this.submitHandler}>
+                <h3>Due date</h3>
                 <input type="text"
                     onChange={evt => {
                         console.log("due date being updated")
                         this.setState({ dueDateInput: evt.target.value })
                     }}
                     value={this.state.dueDateInput} />
+                <h3>Item description</h3>
                 <input type="text"
                     onChange={this.onChangeHandler}
                     value={this.state.userInput} />
-                <input type="submit"></input>
+                <input type="submit" />
             </form>
+            <h3>Search filter</h3>
+            <input type="text"
+                onChange={this.filterChangeHandler}
+                value={this.state.filterInput} />
+
             <button onClick={this.deleteEverything}>Delete all</button>
             <button onClick={this.rename}>Rename list</button>
             <button onClick={this.deleteFirst}>Delete first element</button>
             <button onClick={this.reverseItems}>Reverse the list</button>
-            <button onClick={this.deleteSpecific}>Delete specific element</button>
+            <button onClick={this.deleteSpecific}>Delete todo</button>
 
-        </div>)
+        </div >)
     }
 }
 export default App 
