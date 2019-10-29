@@ -75,11 +75,28 @@ class App extends Component {
         console.log("updating search filter")
         this.setState({ filterInput: evt.target.value })
     }
+    // Using filter, we will filter all the elements that don't
+    // match the filter input box.
+    // We're using this function twice and it uses the 
+    // `this` keyword, so we need to make it a method
+    matchesSearch = todo => {
+        return todo.description.includes(this.state.filterInput)
+    }
+    deleteSearchResults = () => {
+        console.log("filtering the todos")
+        let predicate = todo => {
+            return !this.matchesSearch(todo)
+        }
+        this.setState({ allTodos: this.state.allTodos.filter(predicate) })
+    }
     render() {
         console.log("Rendering with state", this.state)
         if (!this.state.listName) {
             return (<div> loading ... </div>)
         }
+        // Using map, we will use this to create an array of objects
+        // that contain their index
+
         let numberTodo = (todo, ind) => {
             return {
                 description: todo.description,
@@ -87,9 +104,10 @@ class App extends Component {
                 index: ind + 1
             }
         }
-        let filterTodo = indexedTodo => {
-            return indexedTodo.description.includes(this.state.filterInput)
-        }
+
+        // the numberTodo function above created objects with the index,
+        // dueDate and description properties. This function will create the
+        // react elements to display them.
         let displayTodo = indexedTodo => {
             return (<li>{indexedTodo.index}.
                 {indexedTodo.dueDate}:
@@ -97,7 +115,7 @@ class App extends Component {
         }
 
         let numberedTodos = this.state.allTodos.map(numberTodo)
-        let filteredTodos = numberedTodos.filter(filterTodo)
+        let filteredTodos = numberedTodos.filter(this.matchesSearch)
         let displayedTodos = filteredTodos.map(displayTodo)
 
         return (<div>
@@ -129,6 +147,7 @@ class App extends Component {
             <button onClick={this.deleteFirst}>Delete first element</button>
             <button onClick={this.reverseItems}>Reverse the list</button>
             <button onClick={this.deleteSpecific}>Delete todo</button>
+            <button onClick={this.deleteSearchResults}>Delete search results</button>
 
         </div >)
     }
