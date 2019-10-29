@@ -40,6 +40,15 @@ class App extends Component {
         console.log("Deleting the first element")
         this.setState({ allTodos: this.state.allTodos.slice(1) })
     }
+    reverseItems = () => {
+        console.log("Reverse the list")
+        // First copy the current list
+        let newTodos = this.state.allTodos.slice()
+        // Then modify the copy (reverse modifies the array)
+        newTodos.reverse()
+        // Then set the todos propety of the state to the copy
+        this.setState({ allTodos: newTodos })
+    }
     render() {
         console.log("Rendering with state", this.state)
         if (!this.state.listName) {
@@ -59,6 +68,7 @@ class App extends Component {
             <button onClick={this.deleteEverything}>Delete all</button>
             <button onClick={this.rename}>Rename list</button>
             <button onClick={this.deleteFirst}>Delete first element</button>
+            <button onClick={this.reverseItems}>Reverse the list</button>
         </div>)
     }
 }
