@@ -6,7 +6,8 @@ class App extends Component {
         this.state = {
             listName: undefined,
             allTodos: [],
-            userInput: ""
+            userInput: "",
+            dueDateInput: ""
         }
     }
     componentDidMount() {
@@ -22,9 +23,15 @@ class App extends Component {
     submitHandler = event => {
         console.log("Form submitted")
         event.preventDefault()
+        let newItem = {
+            description: this.state.userInput,
+            dueDate: this.state.dueDateInput
+        }
+        console.log("adding an item", newItem)
         this.setState({
             userInput: "",
-            allTodos: this.state.allTodos.concat(this.state.userInput)
+            dueDateInput: "",
+            allTodos: this.state.allTodos.concat(newItem)
         })
     }
     deleteEverything = () => {
@@ -54,12 +61,21 @@ class App extends Component {
         if (!this.state.listName) {
             return (<div> loading ... </div>)
         }
+        let displayTodo = todo => {
+            return (<li>{todo.dueDate}: {todo.description}</li>)
+        }
         return (<div>
             <h1>{this.state.listName}</h1>
             <ul>
-                {this.state.allTodos.map(x => (<li>{x}</li>))}
+                {this.state.allTodos.map(displayTodo)}
             </ul>
             <form onSubmit={this.submitHandler}>
+                <input type="text"
+                    onChange={evt => {
+                        console.log("due date being updated")
+                        this.setState({ dueDateInput: evt.target.value })
+                    }}
+                    value={this.state.dueDateInput} />
                 <input type="text"
                     onChange={this.onChangeHandler}
                     value={this.state.userInput} />
